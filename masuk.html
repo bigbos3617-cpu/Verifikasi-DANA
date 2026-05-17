@@ -47,13 +47,20 @@
             <img src="logo.png" alt="DANA" class="w-20 h-20 object-contain">
         </div>
         <h2 class="text-sm font-medium text-grayText mb-4 text-center">Masukkan nomor HP kamu untuk lanjut</h2>
-        <form id="formTelepon" class="space-y-6">
-            <div class="flex items-center gap-2">
-                <div class="flex items-center gap-2 px-3 py-2.5 border rounded-lg input-border w-20 justify-center">
-                    <img src="https://flagcdn.com/w20/id.png" alt="Bendera Indonesia" class="w-5 h-3.5">
-                    <span class="text-gray-800 text-sm font-medium">+62</span>
-                </div>
-                <input type="tel" id="nomorTelepon" placeholder="811-1234-5678" class="flex-1 px-3 py-2.5 border rounded-lg input-border text-sm placeholder:text-gray-500 focus:input-focus" required>
+        
+    </div>
+    <!-- Label Negara & Nomor -->
+    <div class="text-sm text-white width: 50%; max-width: 400px; display: flex; gap: 30px; margin-bottom: 20px; font-bold: 2rem; opacity: 0.8;">
+        <span>Negara</span>
+        <span style="margin-left: 50px;">Nomor</span>
+    </div>
+     <form id="formTelepon" class="space-y-2">
+            <div class="flex items-center gap-5">
+             <div class="flex items-center gap-2 px-3 py-2.5 border rounded-lg input-border w-50 -center">
+                    <img src="https://flagcdn.com/w20/id.png" alt="Bendera Indonesia" class="w-5 h-5.5">
+                    <span class="teks-center-500 text-sm font-bold">+62</span>
+             </div>
+                <input type="tel" id="nomorTelepon" placeholder="8 1 1 - 1 2 3 4 - 5 6 7 8" class="flex-2 px-5 py-2.5 border rounded-lg input-border text-sm placeholder:text-bold-500 focus:input-focus" required>
             </div>
             <div class="text-center px-1">
                 <h2 class="text-sm text-white font-medium mb-6">Kami akan menggunakan nomor HP ini sebagai ID kamu dan untuk mengamankan akun kamu. Dengan melanjutkan, kamu juga setuju dengan S&K serta Kebijakan Privasi kami.</h2>
@@ -63,7 +70,7 @@
     </main>
     <div class="fixed bottom-6 left-0 right-0 container-sm px-4">
         <button type="submit" form="formTelepon" id="btnLanjutkan" class="w-full bg-grayBtn text-gray-400 font-medium py-2.5 rounded-lg text-sm cursor-not-allowed transition-all duration-300" disabled>
-            Lanjutkan
+            LANJUTKAN
         </button>
     </div>
     <script>

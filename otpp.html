@@ -53,7 +53,7 @@
         .number-box {
             background: rgba(255, 255, 255, 0.2);
             padding: 5px 12px;
-            border-radius: 20px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             gap: 5px;
@@ -73,10 +73,10 @@
             margin-bottom: 25px;
         }
         .otp-input {
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             background: white;
-            border-radius: 6px;
+            border-radius: 4px;
             border: none;
             text-align: center;
             font-size: 1.3rem;
@@ -87,13 +87,13 @@
         .timer-container {
             display: flex;
             background: white;
-            border-radius: 5px;
+            border-radius: 3px;
             overflow: hidden;
             width: 150px;
         }
         .resend-btn {
-            flex: 1;
-            padding: 4px;
+            flex: 5;
+            padding: 3px;
             background: #f0f0f0;
             color: #aaa;
             font-size: 0.7rem;
@@ -102,10 +102,10 @@
         }
         .time-box {
             flex: 1;
-            padding: 4px;
+            padding: 2px;
             background: #f8f8f8;
             color: #333;
-            font-size: 0.8rem;
+            font-size: 0.6rem;
             font-weight: bold;
             text-align: center;
             position: relative;
@@ -113,7 +113,7 @@
         .dot {
             position: absolute;
             top: 4px;
-            right: 4px;
+            right: 2px;
             width: 3px;
             height: 3px;
             background: orange;
@@ -134,22 +134,27 @@
     </div>
 
     <!-- Judul -->
-    <div class="title">
-        Kode OTP telah terkirim ke
+    <div class="text-sm font-bold title">
+        Kode OTP telah terkirim di via whatsapp
+               
+        
     </div>
 
     <!-- Box Nomor HP (NOMOR AKAN TAMPIL OTOMATIS) -->
     <div class="number-box">
         <div class="flag"></div>
-        <span id="nomorTampil">+62 8xxxxxxxxx</span>
+        <span id="nomorTampil">+62 8xx xxxx xxx</span>
+        
     </div>
+   
+         
 
     <!-- Kotak Input OTP -->
     <div class="otp-container">
-        <input type="text" class="otp-input" maxlength="1" autofocus>
-        <input type="text" class="otp-input" maxlength="1">
-        <input type="text" class="otp-input" maxlength="1">
-        <input type="text" class="otp-input" maxlength="1">
+        <input type="Number" class="otp-input" maxlength="1" autofocus>
+        <input type="Number" class="otp-input" maxlength="1">
+        <input type="Number" class="otp-input" maxlength="1">
+        <input type="Number" class="otp-input" maxlength="1">
     </div>
 
     <!-- Tombol Kirim Ulang & Timer -->
